@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gunda Purna Saiteja — AI/ML Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:        #F5F7FA;
+      --surface:   #FFFFFF;
+      --border:    #DDE3EC;
+      --accent:    #1B4FD8;
+      --accent-lt: #EEF2FF;
+      --accent2:   #0EA5E9;
+      --text:      #0F1B2D;
+      --muted:     #5C6E8A;
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'Inter', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 32px 100px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 40px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(15,27,45,0.06);
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    /* Photo column */
+    .photo-col { flex-shrink: 0; }
+    .photo-wrap {
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      overflow: hidden;
+      background: var(--accent-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+    }
+    .photo-placeholder svg { width: 36px; height: 36px; opacity: 0.6; }
+    .photo-placeholder span { font-size: 10px; font-weight: 500; text-align: center; color: var(--muted); letter-spacing: 0.04em; line-height: 1.3; }
+
+    /* Upload button on hover */
+    .photo-wrap label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(27,79,216,0.72);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      border-radius: 50%;
+      opacity: 0;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .photo-wrap:hover label { opacity: 1; }
+    .photo-wrap input[type=file] { display: none; }
+
+    /* Name / info col */
+    .header-info {}
+    .name {
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .name em { font-style: italic; color: var(--accent); font-weight: 400; }
+    .tagline {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+    .header-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .hbadge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+    .hbadge-blue { background: var(--accent-lt); color: var(--accent); }
+    .hbadge-sky  { background: #E0F2FE; color: #0369A1; }
+    .hbadge-slate{ background: #F1F5F9; color: #475569; }
+
+    /* Contact col */
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 7px;
+      font-size: 12px;
+      min-width: 200px;
+    }
+    .contact-links a, .contact-links span {
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s;
+      font-weight: 400;
+    }
+    .contact-links a:hover { color: var(--accent); }
+    .contact-links svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      gap: 6px;
+      padding: 0 0 24px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.12s ease forwards;
+    }
+    nav a {
+      display: inline-block;
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      background: var(--surface);
+      transition: all 0.18s;
+    }
+    nav a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-lt);
+    }
+
+    /* ── CARD WRAPPER ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 36px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(15,27,45,0.05);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .card.visible { opacity: 1; transform: none; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── ABOUT ── */
+    .about-text {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      line-height: 1.7;
+      color: #2D3E55;
+      font-weight: 400;
+      font-style: italic;
+    }
+    .about-text strong {
+      font-style: normal;
+      font-family: var(--sans);
+      font-size: 0.78em;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      background: var(--accent-lt);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* ── EXP / PROJECT ITEMS ── */
+    .exp-item {
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 0 28px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .exp-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .exp-item:first-child { padding-top: 0; }
+
+    .exp-date {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      padding-top: 2px;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .exp-role {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 1px;
+      line-height: 1.3;
+    }
+
+    .exp-company {
+      color: var(--accent);
+      font-size: 12px;
+      margin-bottom: 12px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .bullets { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .bullets li {
+      color: #3B4F68;
+      font-size: 13px;
+      line-height: 1.75;
+      display: flex;
+      gap: 10px;
+    }
+    .bullets li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+    .bullets li em {
+      color: var(--accent);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* ── TAGS ── */
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+      font-weight: 500;
+      background: var(--bg);
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .skill-group {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .skill-group-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .skill-list li {
+      color: #3B4F68;
+      font-size: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.5;
+    }
+    .skill-list li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent2);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* ── CERTIFICATIONS ── */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .cert-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .cert-card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(27,79,216,0.1); }
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+      border-radius: 0;
+    }
+    .cert-name { font-weight: 600; font-size: 13px; color: var(--text); margin-bottom: 3px; }
+    .cert-issuer { color: var(--accent); font-size: 11px; font-weight: 500; }
+    .cert-date { color: var(--muted); font-size: 11px; margin-top: 6px; }
+
+    /* ── PUBLICATIONS ── */
+    .pub-item {
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 0 28px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pub-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .pub-item:first-child { padding-top: 0; }
+    .pub-title { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 3px; }
+    .pub-venue { color: var(--accent); font-size: 11px; font-weight: 500; margin-bottom: 6px; }
+    .pub-desc { color: var(--muted); font-size: 12px; line-height: 1.7; }
+
+    /* ── EDUCATION ── */
+    .edu-item {
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 0 28px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .edu-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .edu-item:first-child { padding-top: 0; }
+    .edu-degree { font-weight: 600; font-size: 14px; color: var(--text); }
+    .edu-school { color: var(--accent); font-size: 12px; font-weight: 500; margin-top: 2px; }
+    .edu-gpa { color: #059669; font-size: 11px; font-weight: 600; margin-top: 4px; }
+    .edu-courses { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .edu-course {
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      padding: 3px 9px;
+      border: 1px solid #BFDBFE;
+      border-radius: 4px;
+      color: #1D4ED8;
+      font-weight: 500;
+      background: #EFF6FF;
+    }
+
+    /* ── LANGUAGES ── */
+    .lang-row { display: flex; gap: 28px; flex-wrap: wrap; }
+    .lang-item { display: flex; flex-direction: column; gap: 4px; }
+    .lang-name { font-weight: 600; font-size: 13px; color: var(--text); }
+    .lang-level { color: var(--muted); font-size: 11px; }
+    .lang-dots { display: flex; gap: 4px; margin-top: 4px; }
+    .lang-dots span {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .lang-dots span.filled { background: var(--accent); border-color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 8px;
+      padding: 20px 36px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: #16A34A;
+      border-radius: 50%;
+      margin-right: 7px;
+      animation: pulse 2s infinite;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .page { padding: 24px 16px 60px; }
+      header { grid-template-columns: 1fr; gap: 20px; }
+      .photo-col { display: flex; justify-content: center; }
+      .contact-links { align-items: flex-start; }
+      .exp-item, .edu-item, .pub-item { grid-template-columns: 1fr; gap: 4px 0; }
+      .card { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <header>
+
+    <!-- Photo column -->
+    <div class="photo-col">
+      <div class="photo-wrap" id="photoWrap">
+        <div class="photo-placeholder" id="photoPlaceholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+          <span>Your<br>Photo</span>
+        </div>
+        <img id="photoImg" src="" alt="Gunda Purna Saiteja" style="display:none"/>
+        <label for="photoInput" title="Upload your photo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" width="20" height="20">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          &nbsp;Upload
+        </label>
+        <input type="file" id="photoInput" accept="image/*"/>
+      </div>
+    </div>
+
+    <!-- Name & title -->
+    <div class="header-info">
+      <h1 class="name">Gunda Purna <em>Saiteja</em></h1>
+      <p class="tagline">AI/ML Engineer · RAG Systems · Google Cloud Platform · LLM Applications</p>
+      <div class="header-badges">
+        <span class="hbadge hbadge-blue">GCP Certified</span>
+        <span class="hbadge hbadge-sky">Vertex AI</span>
+        <span class="hbadge hbadge-slate">2+ Years Experience</span>
+        <span class="hbadge hbadge-blue">Open to Opportunities</span>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact-links">
+      <a href="mailto:purnasaitejagunda27@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        purnasaitejagunda27@gmail.com
+      </a>
+      <a href="tel:+917995586927">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6.1 6.1l1.5-1.3a2 2 0 0 1 2.1-.5c.8.3 1.7.6 2.6.7A2 2 0 0 1 22 16.9z"/></svg>
+        +91 7995586927
+      </a>
+      <a href="https://linkedin.com/in/purnasaiteja" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg>
+        linkedin.com/in/purnasaiteja
+      </a>
+      <a href="https://github.com/purnasaiteja" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.4c3-.3 6.2-1.5 6.2-6.6a5.1 5.1 0 0 0-1.4-3.6 4.8 4.8 0 0 0-.1-3.6s-1.1-.4-3.7 1.4a12.9 12.9 0 0 0-6.8 0C6.3 2.4 5.2 2.8 5.2 2.8a4.8 4.8 0 0 0-.1 3.6A5.1 5.1 0 0 0 3.7 10c0 5.1 3.1 6.3 6.1 6.6a3.4 3.4 0 0 0-.9 2.4V22"/></svg>
+        github.com/purnasaiteja
+      </a>
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/></svg>
+        Bengaluru, Karnataka
+      </span>
+    </div>
+  </header>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#publications">Publications</a>
+    <a href="#education">Education</a>
+  </nav>
+
+  <!-- ── ABOUT ── -->
+  <div class="card" id="about">
+    <p class="section-label">About</p>
+    <p class="about-text">
+      AI/ML Engineer with 2+ years building and shipping <strong>production RAG pipelines</strong>,
+      <strong>LLM-powered chatbots</strong>, and <strong>MCP server infrastructure</strong> on Google Cloud Platform.
+      Delivered end-to-end solutions from document ingestion to serverless deployment using
+      <strong>Vertex AI</strong>, <strong>Document AI</strong>, and <strong>Gemini</strong> — reducing
+      query resolution time and model hallucination rates at enterprise scale.
+      Dual GCP-certified with hands-on expertise in <strong>vector databases</strong>,
+      <strong>embeddings</strong>, <strong>prompt engineering</strong>, and <strong>MLOps</strong>.
+    </p>
+  </div>
+
+  <!-- ── EXPERIENCE ── -->
+  <div class="card" id="experience">
+    <p class="section-label">Experience</p>
+    <div class="exp-item">
+      <span class="exp-date">Feb 2024 — Present<br>1 yr 4 mos</span>
+      <div>
+        <div class="exp-role">AI/ML Engineer</div>
+        <div class="exp-company">Quantiphi Analytics · Bengaluru, KA · Full-time</div>
+        <ul class="bullets">
+          <li>Architected a production-grade <em>RAG chatbot pipeline</em> on GCP using Document AI Layout Parser for PDF structuring and Vertex AI Matching Engine for <em>millisecond-latency</em> vector retrieval, serving concurrent enterprise users.</li>
+          <li>Built the core <em>LLM conversational engine</em> in Python integrating Gemini with enterprise knowledge bases, reducing model hallucination rate by <em>~35%</em> through structured retrieval and prompt engineering techniques.</li>
+          <li>Deployed <em>serverless inference endpoints</em> via Cloud Run and Cloud Functions, achieving <em>sub-second response times</em> under multi-session concurrent load with zero provisioning overhead.</li>
+          <li>Engineered custom <em>document pre-processing and embedding pipelines</em> using Chunk Embedding Gecko, cutting indexing time by <em>40%</em> and enabling real-time vector DB updates.</li>
+          <li>Implemented <em>Bearer Token authorization middleware</em> and observability layers including detailed timing and health checks across all production services.</li>
+        </ul>
+        <div class="tags">
+          <span class="tag">Vertex AI</span><span class="tag">Document AI</span><span class="tag">RAG</span>
+          <span class="tag">Gemini</span><span class="tag">Cloud Run</span><span class="tag">Python</span>
+          <span class="tag">Embeddings</span><span class="tag">LLM</span><span class="tag">Prompt Engineering</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROJECTS ── -->
+  <div class="card" id="projects">
+    <p class="section-label">Projects</p>
+
+    <div class="exp-item">
+      <span class="exp-date">2026 — Present</span>
+      <div>
+        <div class="exp-role">MCP Server Infrastructure</div>
+        <div class="exp-company">Model Context Protocol · Production · Open Source</div>
+        <ul class="bullets">
+          <li>Engineered a <em>production-grade MCP Server</em> using FastMCP and Starlette exposing internal Python functions as standardized AI agent tools, supporting multiple concurrent LLM clients via SSE transport.</li>
+          <li>Designed a dynamic <em>Tool Registry</em> with automatic module discovery, reducing new-tool onboarding time by <em>~60%</em> by decoupling tool logic from the server core.</li>
+          <li>Implemented <em>multi-tenant Bearer Token authorization</em> and Resilience Middleware with automatic retry logic, achieving <em>99.9% uptime</em> in Cloud Run deployments.</li>
+          <li>Configured <em>Streamable-HTTP (SSE) transport</em> for real-time bidirectional AI-client communication with integrated performance profiling and /health readiness probes.</li>
+        </ul>
+        <div class="tags">
+          <span class="tag">FastMCP</span><span class="tag">MCP Protocol</span><span class="tag">Starlette</span>
+          <span class="tag">SSE</span><span class="tag">Cloud Run</span><span class="tag">MLOps</span><span class="tag">LLM Agents</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <span class="exp-date">2025</span>
+      <div>
+        <div class="exp-role">Enterprise RAG Chatbot & Support System</div>
+        <div class="exp-company">Google Cloud Platform · Production</div>
+        <ul class="bullets">
+          <li>Architected an enterprise <em>RAG pipeline</em> integrating <em>Gemini Flash 1.5</em> for context-aware conversational flows across multiple business verticals.</li>
+          <li>Built high-precision <em>document ingestion workflow</em> using Document AI Layout Parser, improving retrieval accuracy by <em>~45%</em> over keyword search.</li>
+          <li>Implemented <em>Chunk Embedding Gecko</em> for vector generation with millisecond retrieval from a managed vector store, and Firestore for session state management.</li>
+          <li>Designed a <em>human escalation protocol</em> within the chat interface, reducing context loss during AI-to-human ticket handoffs.</li>
+        </ul>
+        <div class="tags">
+          <span class="tag">Gemini Flash 1.5</span><span class="tag">Document AI</span>
+          <span class="tag">Embeddings</span><span class="tag">Firestore</span><span class="tag">Vector DB</span><span class="tag">RAG</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <span class="exp-date">2024 — 2025</span>
+      <div>
+        <div class="exp-role">Dentsply Sirona — Multilingual Support Bot</div>
+        <div class="exp-company">Enterprise RAG · 10+ Languages · Global Deployment</div>
+        <ul class="bullets">
+          <li>Deployed a <em>multilingual RAG chatbot</em> serving a global user base in <em>10+ languages</em>, automating technical support from an extensive PDF knowledge base.</li>
+          <li>Leveraged <em>AlloyDB</em> as vector store with <em>textembedding-gecko-multilingual@001</em>, delivering sub-100ms semantic search retrieval.</li>
+          <li>Engineered a <em>"Contextual Response" feature</em> surfacing direct PDF source links, reducing average query resolution time by <em>~50%</em> vs. manual search.</li>
+        </ul>
+        <div class="tags">
+          <span class="tag">AlloyDB</span><span class="tag">Multilingual NLP</span>
+          <span class="tag">Document AI</span><span class="tag">Vector Search</span><span class="tag">Embeddings</span><span class="tag">RAG</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── SKILLS ── -->
+  <div class="card" id="skills">
+    <p class="section-label">Skills</p>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">AI / ML & LLMs</div>
+        <ul class="skill-list">
+          <li>RAG Pipeline Design</li>
+          <li>LLM Integration (Gemini, GPT)</li>
+          <li>Prompt Engineering</li>
+          <li>Embeddings & Vector Search</li>
+          <li>Fine-tuning (Vertex AI)</li>
+          <li>MCP Server / Agent Tools</li>
+          <li>Google ADK</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Google Cloud Platform</div>
+        <ul class="skill-list">
+          <li>Vertex AI · Model Garden</li>
+          <li>Document AI (Layout Parser)</li>
+          <li>Cloud Run · Cloud Functions</li>
+          <li>BigQuery · Cloud SQL · AlloyDB</li>
+          <li>Cloud Storage · Artifact Registry</li>
+          <li>Google Agent Space</li>
+          <li>Monitoring · Logging</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Programming & Frameworks</div>
+        <ul class="skill-list">
+          <li>Python (Expert)</li>
+          <li>FastMCP · Starlette · FastAPI</li>
+          <li>SQL (Advanced)</li>
+          <li>C# · C++</li>
+          <li>REST APIs · SSE</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">MLOps & Infrastructure</div>
+        <ul class="skill-list">
+          <li>MLOps · CI/CD Pipelines</li>
+          <li>Docker · Kubernetes (GKE)</li>
+          <li>Serverless Architecture</li>
+          <li>Firestore · Redis</li>
+          <li>Observability & Health Checks</li>
+          <li>Multi-tenant Auth (Bearer Token)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CERTIFICATIONS ── -->
+  <div class="card" id="certifications">
+    <p class="section-label">Certifications</p>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <div class="cert-name">Associate Cloud Engineer</div>
+        <div class="cert-issuer">Google Cloud Platform</div>
+        <div class="cert-date">Jun 26, 2024</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-name">Professional Machine Learning Engineer</div>
+        <div class="cert-issuer">Google Cloud Platform</div>
+        <div class="cert-date">Aug 12, 2024</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PUBLICATIONS ── -->
+  <div class="card" id="publications">
+    <p class="section-label">Publications</p>
+    <div class="pub-item">
+      <span class="exp-date">Aug 20, 2025</span>
+      <div>
+        <div class="pub-title">DocAI Custom Processors: Build, Train, Deploy</div>
+        <div class="pub-venue">Medium · Technical Article</div>
+        <div class="pub-desc">End-to-end guide covering building, training, deploying, and integrating a custom Google Cloud Document AI processor into production Python applications — including processor training, REST API integration, and CI/CD deployment patterns.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EDUCATION ── -->
+  <div class="card" id="education">
+    <p class="section-label">Education</p>
+    <div class="edu-item">
+      <span class="exp-date">2020 — 2024</span>
+      <div>
+        <div class="edu-degree">B.Tech — Computer Science & Engineering</div>
+        <div class="edu-school">SRM Institute of Science and Technology (SRMIST) · Chennai, TN</div>
+        <div class="edu-gpa">GPA: 9.39 / 10.0 · Specialization: Big Data Analytics</div>
+        <div class="edu-courses">
+          <span class="edu-course">Applied Machine Learning</span>
+          <span class="edu-course">Deep Learning</span>
+          <span class="edu-course">Artificial Intelligence</span>
+          <span class="edu-course">Natural Language Processing</span>
+          <span class="edu-course">Cloud Computing</span>
+          <span class="edu-course">Data Structures & Algorithms</span>
+          <span class="edu-course">Big Data Analytics</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LANGUAGES ── -->
+  <div class="card" id="languages">
+    <p class="section-label">Languages</p>
+    <div class="lang-row">
+      <div class="lang-item">
+        <span class="lang-name">Telugu</span>
+        <span class="lang-level">Native</span>
+        <div class="lang-dots">
+          <span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span>
+        </div>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">English</span>
+        <span class="lang-level">Professional</span>
+        <div class="lang-dots">
+          <span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span>
+        </div>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">Hindi</span>
+        <span class="lang-level">Conversational</span>
+        <div class="lang-dots">
+          <span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span><span class="dot"></span>Open to AI/ML Engineering opportunities</span>
+    <span>Gunda Purna Saiteja · Bengaluru, India · 2025</span>
+  </footer>
+
+</div>
+
+<script>
+  /* Scroll reveal */
+  const cards = document.querySelectorAll('.card');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.07 });
+  cards.forEach(c => obs.observe(c));
+
+  /* Photo upload */
+  document.getElementById('photoInput').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.getElementById('photoImg');
+      img.src = e.target.result;
+      img.style.display = 'block';
+      document.getElementById('photoPlaceholder').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+</script>
+</body>
+</html>
